@@ -1,0 +1,10 @@
+[theme]
+base = "dark"
+primaryColor="#6b705c"
+
+[ui]
+hideTopBar = true
+
+[server]
+enableCORS = false
+enableXsrfProtection = false
