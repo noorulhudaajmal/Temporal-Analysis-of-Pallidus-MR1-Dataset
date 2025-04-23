@@ -32,8 +32,14 @@ st.markdown("""
 def pre_process(data):
     data.rename(columns={'Date & Time': 'DateTime'}, inplace=True)
     data["DateTime"] = pd.to_datetime(data["DateTime"])
+
+    data = data.dropna(subset=['DateTime'])
+    unnamed_cols = [col for col in data.columns if 'Unnamed' in col or 'Notes' in col]
+    data = data.drop(columns=unnamed_cols, axis=1)
+
     # Set 'Date & Time' as the index
     data = data.set_index('DateTime', drop=False)
+
     return data
 
 
@@ -47,9 +53,9 @@ with st.sidebar:
 df = pd.DataFrame()
 devices = []
 if uploaded_file is not None:
-    df = pd.read_excel(uploaded_file)
-    devices = list(df.columns[1:])
+    df = pd.read_excel(uploaded_file, skiprows=3, header=1)
     df = pre_process(df)
+    devices = list(df.columns[1:])
 
     menu = option_menu(menu_title=None,
                        options=["Raw Data", "Grouped Data",

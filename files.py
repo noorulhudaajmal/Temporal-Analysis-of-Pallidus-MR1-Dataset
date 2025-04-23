@@ -286,6 +286,10 @@ def bar_comparison_plot_b(g1, g2, dt, frame, day_night, names=["Group1", "Group2
         temp1 = temp1[temp1.day_night == day_night]
         temp2 = temp2[temp2.day_night == day_night]
 
+
+    temp1['Mean'] = pd.to_numeric(temp1['Mean'], errors='coerce')
+    temp2['Mean'] = pd.to_numeric(temp2['Mean'], errors='coerce')
+
     stat, p = ttest_ind(temp1.Mean, temp2.Mean)
     p_test_result = 't-statistic: {:.3f} <br>p-value: {:.10f}'.format(stat, p)
 
@@ -417,6 +421,9 @@ def create_summary(data, G1, G2, gn1, gn2, day_range):
         xx["Total"].append(g2[i].mean())
 
     main_frame = pd.DataFrame.from_dict(xx)
+
+    g1['Mean'] = pd.to_numeric(g1['Mean'], errors='coerce')
+    g2['Mean'] = pd.to_numeric(g2['Mean'], errors='coerce')
 
     stat, p = ttest_ind(g1.Mean, g2.Mean)
     night_stat, night_p = ttest_ind(
